@@ -1,4 +1,5 @@
 require Die
+require Combos
 
 let NUM_DICE = 5
 
@@ -20,17 +21,23 @@ class Round
             print("[{dice[i].value}] ")
 
     def setAside
-        // check to see if selected dice could be all combined in combos
-        // if not return
+        var selectedDice <- self->getSelectedDice()
+        if selectedDice |> length() == 0
+            return
+
+        let combsValue = selectedDice |> calculate()
 
         for die in dice
-            if die.setAside
-                continue
-
+            if !die.setAside && die.selected
+                die.setAside = true
         return
 
-    def private calculateScore
-        return 100
+    def private getSelectedDice(): array<int>
+        var res: array<int>
+        for die in dice
+            if (!die.setAside && die.selected)
+                push(res, die.value)
+        return <- res
 
     def bankScore
         return

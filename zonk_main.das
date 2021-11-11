@@ -6,16 +6,20 @@ require Random
 require Round
 require Die
 require view
+require Zonk
 
 var round: Round?
+var zonk: Zonk?
 
 // 'initialize' runs once when game starts and every hot-reload
 [export]
 def initialize
+    // set_resolution(320, 200)
     set_window_title("ZONK")
     randomizeSeed()
-    round = new Round()
-    round->throwDice()
+    // round = new Round()
+    // round->throwDice()
+    zonk = new Zonk()
     return
 
 // this function is called to update game data,
@@ -24,12 +28,37 @@ def initialize
 def act(dt: float)
     if get_key(VK_ESCAPE)
         schedule_quit_game()
+    if get_key_down(VK_1)
+        selectDie(0)
+    if get_key_down(VK_2)
+        selectDie(1)
+    if get_key_down(VK_3)
+        selectDie(2)
+    if get_key_down(VK_4)
+        selectDie(3)
+    if get_key_down(VK_5)
+        selectDie(4)
+    if get_key_down(VK_SPACE)
+        setAside()
     return
 
 // this function will be called every frame after 'act',
 // you can draw anything in this function
 [export]
 def draw
-    for i in range(length(round.dice))
-        drawDie(10 + 10 * 8 * i, 10, round.dice[i].value)
+    for i in range(length(zonk.round.dice))
+        let die = zonk.round.dice[i]
+        drawDie(8 + 8 * 8 * i, 8, die.value, die.selected, die.setAside)
+
+    drawPlayerInfo(6, 200, "Player 1", zonk.bank, 0xFF00FF)
     return
+
+// commands
+def selectDie(dieIndex: int)
+    zonk.round.dice[dieIndex]->select()
+
+def setAside
+    zonk.round->setAside()
+
+def bankScore
+    zonk.round->bankScore()
