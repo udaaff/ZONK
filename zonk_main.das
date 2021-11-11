@@ -60,5 +60,8 @@ def selectDie(dieIndex: int)
 def setAside
     zonk.round->setAside()
 
+def throwDice
+    zonk.round->throwDice()
+
 def bankScore
     zonk.round->bankScore()
