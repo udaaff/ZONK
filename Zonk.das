@@ -9,4 +9,4 @@ class Zonk
 
     def Zonk()
         round = new Round()
-        round->throwDice()
+        // round->throwDice()

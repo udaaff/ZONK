@@ -18,8 +18,6 @@ def initialize
     // set_resolution(320, 200)
     set_window_title("ZONK")
     randomizeSeed()
-    // round = new Round()
-    // round->throwDice()
     zonk = new Zonk()
     return
 
@@ -41,19 +39,17 @@ def act(dt: float)
         selectDie(4)
     if get_key_down(VK_SPACE)
         setAside()
+    if get_key_down(VK_RETURN)
+        throwDice()
     return
 
 // this function will be called every frame after 'act',
 // you can draw anything in this function
 [export]
 def draw
-    let gap = 8
-    for i in range(length(zonk.round.dice))
-        let die = zonk.round.dice[i]
-        drawDie(gap + gap * gap * i, gap, die.value, gap * 7, die.selected, die.setAside)
-
-    drawPlayerInfo(6, 200, "Player 1", zonk.bank, 0xFF00FF)
-    drawCombos(340, gap, 200, CombosList)
+    drawDices(zonk.round.dice)
+    drawPlayerInfo(6, 200, "Player 1", zonk.bank, zonk.round.score, 0xFF00FF)
+    drawCombos(340, 8, 200, CombosList)
     return
 
 // commands

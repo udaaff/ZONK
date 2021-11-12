@@ -12,22 +12,27 @@ class Round
     canBankScore: bool = false
     completed: bool = false
 
-    def Round
-        for i in range(NUM_DICE)
-            push(dice, new Die())
-
     def throwDice
         if !canThrowDice
             return
 
+        canThrowDice = false
+
+        if dice |> length() == 0
+            for i in range(NUM_DICE)
+                push(dice, new Die())
+
         for die in dice
-            die->roll()
+            if !die.setAside
+                die->roll()
 
         var vals <- self->getVals()
         if !hasComb(vals)
             score = 0
             completed = true
             print("ZONK")
+        else
+            canSetAside = true
 
         for i in range(NUM_DICE)
             print("[{dice[i].value + 1}] ")
@@ -49,8 +54,10 @@ class Round
         for die in dice
             die.setAside = die.selected
             if !die.setAside
+                canThrowDice = true
                 completed = false
 
+        score += combsValue
         canSetAside = false
         // make some threshold
         canBankScore = true
