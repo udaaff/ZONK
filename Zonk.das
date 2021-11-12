@@ -1,7 +1,10 @@
 require Round
 require Random
+require daslib/media
+require strings
 
-let NUM_ROUNDS = 2
+let NUM_ROUNDS = 4
+let DEFAULT_BALANCE = 2000
 
 enum ZonkState
     IN_ROUND
@@ -16,9 +19,15 @@ class Zonk
     completedRounds: array<Round?>
     state: ZonkState
     goal: int
+    bet: int
+    balance: int
 
-    def Zonk(goal_: int = 5000)
+    def Zonk(goal_: int = 100; bet_: int = 200)
         goal = goal_
+        bet = bet_
+
+        let balanceStr = local_storage_get("zonk_balance")
+        balance = balanceStr == "" ? DEFAULT_BALANCE : to_int(balanceStr)
         self->startNewRound()
 
     def startNewRound
@@ -27,6 +36,10 @@ class Zonk
         round = new Round()
         ++numRounds
         state = ZonkState IN_ROUND
+
+        if numRounds == 1
+            balance -= bet
+            local_storage_set("zonk_balance", "{balance}")
 
     def canPlayNextRound
         return numRounds < NUM_ROUNDS
@@ -42,7 +55,9 @@ class Zonk
             return
 
         if state == ZonkState COMPLETED
-
+            if bank >= goal
+                balance += bet * 200
+                local_storage_set("zonk_balance", "{balance}")
             state = ZonkState HALTED
 
 

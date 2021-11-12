@@ -50,7 +50,7 @@ def drawPlayerInfo(var zonk: Zonk?; x: int; y: int)
     let width = 120
     let gap = 6
     let color = 0xFFFFFF
-    fill_rect(x, y, width, width, 0x0000FF)
+    fill_rect(x, y, width, 140, 0x0000FF)
     set_font_size(14)
     let roundInfo = "Round {zonk.numRounds} of {NUM_ROUNDS}"
     var nameSize = get_text_size(roundInfo)
@@ -59,7 +59,8 @@ def drawPlayerInfo(var zonk: Zonk?; x: int; y: int)
     text_out(x + gap, y + gap * 2 + int(nameSize.y), "Score: {zonk.round.score}", color)
     text_out(x + gap, y + gap * 2 + int(nameSize.y) * 2, "Bank: {zonk.bank}", color)
     text_out(x + gap, y + gap * 2 + int(nameSize.y) * 3, "Goal: {zonk.goal}", color)
-
+    text_out(x + gap, y + gap * 2 + int(nameSize.y) * 4, "Bet: {zonk.bet}", color)
+    text_out(x + gap, y + gap * 2 + int(nameSize.y) * 5, "Balance: {zonk.balance}", color)
 
 def drawDice(var zonk: Zonk?)
     let length = length(zonk.round.dice)
@@ -78,7 +79,7 @@ def drawState(var zonk: Zonk?; x: int; y: int)
 
 def private getStateText(var zonk: Zonk?): string
     if zonk.state == ZonkState HALTED
-        return "Press [ENTER] to start over. "
+        return "Press [F5] to start over. "
 
     if zonk.state == ZonkState IN_ROUND
         var res: string = ""
