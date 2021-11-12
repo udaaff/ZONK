@@ -76,17 +76,19 @@ def drawState(var zonk: Zonk?; x: int; y: int)
 def private getStateText(var zonk: Zonk?): string
     if zonk.state == ZonkState COMPLETED
         return "Game over"
+
     if zonk.state == ZonkState IN_ROUND
         var res: string = ""
         if zonk.round.canSetAside
             res += "Press [1-5] to select dice. Press [SPACE] to hold. "
         if zonk.round.canBankScore
-            res += "Press [SHIFT] to bank."
+            res += "Press [SHIFT] to bank. "
         if zonk.round.canThrowDice
             res += "Press [ENTER] to roll. "
         return res
 
-        if zonk.round.completed && zonk->canPlayNextRound()
-            return "Round result: {zonk.round.score == 0 ? "ZONK" : string(zonk.round.score)}. Press RETURN to roll."
+    if zonk.state == ZonkState WAIT_FOR_ROUND
+        return "Press [ENTER] to roll new round. "
+
     return "not defined yet"
 

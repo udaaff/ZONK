@@ -43,6 +43,8 @@ def act(dt: float)
         setAside()
     if get_key_down(VK_RETURN)
         throwDice()
+    if get_key_down(VK_LSHIFT) || get_key_down(VK_RSHIFT)
+        bankScore()
     return
 
 // this function will be called every frame after 'act',

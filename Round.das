@@ -50,35 +50,44 @@ class Round
             return
 
         // make prize round instad of completion
-        completed = true
+        var prizeRound = true
         for die in dice
             die.setAside = die.selected
             if !die.setAside
                 canThrowDice = true
-                completed = false
+                prizeRound = false
 
         score += combsValue
         canSetAside = false
         // make some threshold
         canBankScore = true
-        return
+
+        if prizeRound
+            canThrowDice = true
+            for die in dice
+                die.setAside = false
+                die.selected = false
 
     def private getSelectedVals(): array<int>
         var res: array<int>
         for die in dice
-            if (!die.setAside && die.selected)
+            if !die.setAside && die.selected
                 push(res, die.value)
         return <- res
 
     def private getVals(): array<int>
         var res: array<int>
         for die in dice
-            push(res, die.value)
+            if !die.setAside
+                push(res, die.value)
         return <- res
 
     def bankScore
-        if score == 0
-            return
+        if canBankScore
+            canBankScore = false
+            canSetAside = false
+            canThrowDice = false
+            completed = true
 
     def toString
         for i in range(NUM_DICE)
