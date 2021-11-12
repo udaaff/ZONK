@@ -20,7 +20,6 @@ def initialize
     set_window_title("ZONK")
     randomizeSeed()
     zonk = new Zonk()
-    return
 
 [export]
 def act(dt: float)
@@ -45,7 +44,6 @@ def act(dt: float)
         bankScore()
     if get_key_down(VK_F1)
         help = !help
-    return
 
 [export]
 def draw
@@ -60,7 +58,6 @@ def draw
 
     if help
         drawHelp(APP_WIDTH, APP_HEIGHT)
-    return
 
 // commands
 def selectDie(dieIndex: int)
