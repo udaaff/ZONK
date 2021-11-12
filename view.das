@@ -2,6 +2,7 @@ require daslib/media
 require Combos
 require Die
 require Zonk
+require Help
 
 let VALUE_2_DIE <- [{auto
     [{int 0; 0; 0; 0; 1; 0; 0; 0; 0}];
@@ -47,10 +48,10 @@ def drawCombo(x: int; y: int; w: int; h: int; comb: Comb?)
     text_out(x + w - gap - int(scoreSize.x), y + h / 2 - int(scoreSize.y) / 2, score, 0xFFFFFF)
 
 def drawPlayerInfo(var zonk: Zonk?; x: int; y: int)
-    let width = 140
+    let width = 146
     let gap = 6
     let color = 0xFFFFFF
-    fill_rect(x, y, width, 140, 0x0000FF)
+    fill_rect(x, y, width, width, 0x0000FF)
     rect(x + 2, y + 2, width - 4, width - 4, 0xFFFFFF)
     set_font_size(14)
     let roundInfo = "Round {zonk.numRounds} of {NUM_ROUNDS}"
@@ -61,7 +62,31 @@ def drawPlayerInfo(var zonk: Zonk?; x: int; y: int)
     text_out(x + gap, y + gap * 2 + int(nameSize.y) * 2, "Bank: {zonk.bank}", color)
     text_out(x + gap, y + gap * 2 + int(nameSize.y) * 3, "Goal: {zonk.goal}", color)
     text_out(x + gap, y + gap * 2 + int(nameSize.y) * 4, "Bet: {zonk.bet}", color)
-    text_out(x + gap, y + gap * 2 + int(nameSize.y) * 5, "Balance: {zonk.balance}", color)
+    text_out(x + gap, y + gap * 2 + int(nameSize.y) * 5, "Bet mult: x{BET_MULT}", color)
+    text_out(x + gap, y + gap * 2 + int(nameSize.y) * 6, "Balance: {zonk.balance}", color)
+
+def drawF1(x: int; y: int)
+    set_font_size(13)
+    text_out(x, y, "Press [F1] for help", 0xFFFFFF)
+
+def drawHelp(w: int; h: int)
+    set_font_size(13)
+    let helpSize = get_text_size(HELP_TEXT)
+    let x = w / 2 - int(helpSize.x) / 2
+    let y = h / 2 - int(helpSize.y) / 2
+    let width = int(helpSize.x)
+    let height = int(helpSize.y)
+    enable_alpha_blend()
+    fill_rect(0, 0, w, h, 0xCC000000)
+    disable_alpha_blend()
+    fill_rect(x - 12, y - 12, width + 24, height + 24, 0x0000FF)
+    rect(x - 10, y - 10, width + 20, height + 20, 0xFFFFFF)
+    rect(x - 8, y - 8, width + 16, height + 16, 0xFFFFFF)
+    text_out(x, y, HELP_TEXT, 0xFFFFFF)
+
+    let esc = "[F1]"
+    let escSize = get_text_size(esc)
+    text_out(x + width - int(escSize.x), y - 16 + int(escSize.y), esc, 0xFFFFFF)
 
 def drawDice(var zonk: Zonk?)
     let length = length(zonk.round.dice)
@@ -125,5 +150,3 @@ def drawBG(w: int; h: int)
     line(gap, h - bottom, w - gap, h - bottom, 0xFFFFFF)
     line(gap, h - bottom + 2, w - gap, h - bottom + 2, 0xFFFFFF)
     return
-
-

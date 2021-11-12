@@ -23,7 +23,7 @@ class Zonk
     bet: int
     balance: int
 
-    def Zonk(goal_: int = 200; bet_: int = 200)
+    def Zonk(goal_: int = 2000; bet_: int = 200)
         goal = goal_
         bet = bet_
 

@@ -14,11 +14,13 @@ let APP_HEIGHT = 400
 
 var round: Round?
 var zonk: Zonk?
+var help: bool = false
 
 // 'initialize' runs once when game starts and every hot-reload
 [export]
 def initialize
     disable_auto_upscale()
+    set_antialiasing(0)
     set_resolution(APP_WIDTH, APP_HEIGHT)
     set_window_title("ZONK")
     randomizeSeed()
@@ -48,6 +50,8 @@ def act(dt: float)
         throwDice()
     if get_key_down(VK_LSHIFT) || get_key_down(VK_RSHIFT)
         bankScore()
+    if get_key_down(VK_F1)
+        help = !help
     return
 
 // this function will be called every frame after 'act',
@@ -55,12 +59,16 @@ def act(dt: float)
 [export]
 def draw
     zonk |> drawDice()
-    zonk |> drawPlayerInfo(8, 190)
+    zonk |> drawPlayerInfo(8, 170)
     zonk |> drawState(APP_WIDTH / 2, APP_HEIGHT - 30)
-    zonk |> drawInfo(20, 120)
+    zonk |> drawInfo(20, 100)
 
     drawCombos(APP_WIDTH - 200 - 8, 8, 200, CombosList)
     drawBG(APP_WIDTH, APP_HEIGHT)
+    drawF1(10, APP_HEIGHT - 80)
+
+    if help
+        drawHelp(APP_WIDTH, APP_HEIGHT)
     return
 
 // commands
