@@ -9,6 +9,9 @@ require view
 require Zonk
 require Combos
 
+let APP_WIDTH = 600
+let APP_HEIGHT = 400
+
 var round: Round?
 var zonk: Zonk?
 
@@ -16,7 +19,7 @@ var zonk: Zonk?
 [export]
 def initialize
     disable_auto_upscale()
-    set_resolution(800, 600)
+    set_resolution(APP_WIDTH, APP_HEIGHT)
     set_window_title("ZONK")
     randomizeSeed()
     zonk = new Zonk()
@@ -51,10 +54,10 @@ def act(dt: float)
 // you can draw anything in this function
 [export]
 def draw
-    drawDices(zonk.round.dice)
-    drawPlayerInfo(6, 200, "Player 1", zonk.bank, zonk.round.score, 0xFF00FF)
-    drawCombos(340, 8, 200, CombosList)
-    drawState(zonk, 400, 500)
+    zonk |> drawDice()
+    zonk |> drawPlayerInfo(6, 200, 0xFF00FF)
+    zonk |> drawState(APP_WIDTH / 2, APP_HEIGHT - 40)
+    drawCombos(APP_WIDTH - 200 - 8, 8, 200, CombosList)
     return
 
 // commands
@@ -66,6 +69,10 @@ def setAside
     zonk.round->setAside()
 
 def throwDice
+    if zonk.state == ZonkState WAIT_FOR_ROUND
+        zonk->startNewRound()
+        return
+
     zonk.round->throwDice()
 
 def bankScore

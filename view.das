@@ -48,23 +48,24 @@ def drawCombo(x: int; y: int; w: int; h: int; comb: Comb?)
     var scoreSize = get_text_size(score)
     text_out(x + w - gap - int(scoreSize.x), y + h / 2 - int(scoreSize.y) / 2, score, 0x000000)
 
-def drawPlayerInfo(x: int; y: int; name: string; bank: int; score: int; color: uint)
+def drawPlayerInfo(var zonk: Zonk?; x: int; y: int; color: uint)
     let width = 120
     let gap = 6
     rect(x, y, width, width, 0x00FF00)
     set_font_size(14)
-    var nameSize = get_text_size(name)
-    text_out(x + gap, y, name, color)
-    text_out(x + gap, y + int(nameSize.y), "Score: {score}", color)
-    text_out(x + gap, y + int(nameSize.y) * 2, "Bank: {bank}", color)
+    let roundInfo = "Round {zonk.numRounds} of {NUM_ROUNDS}"
+    var nameSize = get_text_size(roundInfo)
+    text_out(x + gap, y, roundInfo, color)
+    text_out(x + gap, y + int(nameSize.y), "Score: {zonk.round.score}", color)
+    text_out(x + gap, y + int(nameSize.y) * 2, "Bank: {zonk.bank}", color)
 
-def drawDices(dices: array<Die?>)
-    let length = length(dices)
+def drawDice(var zonk: Zonk?)
+    let length = length(zonk.round.dice)
     if length == 0
         return
     let gap = 8
     for i in range(length)
-        let die = dices[i]
+        let die = zonk.round.dice[i]
         drawDie(gap + gap * gap * i, gap, die.value, gap * 7, die.selected, die.setAside)
 
 def drawState(var zonk: Zonk?; x: int; y: int)
@@ -74,8 +75,8 @@ def drawState(var zonk: Zonk?; x: int; y: int)
     text_out(x - int(stateSize.x) / 2 , y - int(stateSize.y) / 2, state, 0xFFFFFF)
 
 def private getStateText(var zonk: Zonk?): string
-    if zonk.state == ZonkState COMPLETED
-        return "Game over"
+    if zonk.state == ZonkState HALTED
+        return "Press [ENTER] to start over. "
 
     if zonk.state == ZonkState IN_ROUND
         var res: string = ""

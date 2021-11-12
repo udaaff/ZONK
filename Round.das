@@ -17,6 +17,7 @@ class Round
             return
 
         canThrowDice = false
+        canBankScore = false
 
         if dice |> length() == 0
             for i in range(NUM_DICE)
