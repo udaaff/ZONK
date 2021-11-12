@@ -12,17 +12,15 @@ let VALUE_2_DIE <- [{auto
     [{int 1; 1; 1; 0; 0; 0; 1; 1; 1}]
 }]
 
-def drawDie(x: int; y: int; value: int; size: int = 56; selected = false; setAside = false; color = 0x0000FF)
+def drawDie(x: int; y: int; value: int; size: int = 56; selected = false; setAside = false)
     let step = size / 7
-    fill_rect(x, y, size, size, color)
+    fill_rect(x, y, size, size, setAside ? 0x008080 : 0x00FFFF)
 
-    if setAside
-        rect(x, y, size, size, 0xFFFFFF)
-    elif selected
+    if selected
         set_font_size(14)
         let hold = "hold"
         let holdSize = get_text_size(hold)
-        text_out(x + size / 2 - int(holdSize.x) / 2, y + size, hold, 0xFF00FF)
+        text_out(x + size / 2 - int(holdSize.x) / 2, y + size, hold, 0x00FF00)
 
     for i in range(3)
         for j in range(3)
@@ -42,22 +40,26 @@ def drawCombo(x: int; y: int; w: int; h: int; comb: Comb?)
     let gap = h / 2 - dieSize / 2
     line(x + gap, y + h, x + w - gap * 2, y + h, 0x000000)
     for i in range(length(comb.diceVals))
-        drawDie(gap + x + i * (dieSize + gap), gap + y, comb.diceVals[i], dieSize, false, false, 0x00FFFF)
+        drawDie(gap + x + i * (dieSize + gap), gap + y, comb.diceVals[i], dieSize, false, false)
     set_font_size(14)
     var score = "{comb.score}"
     var scoreSize = get_text_size(score)
     text_out(x + w - gap - int(scoreSize.x), y + h / 2 - int(scoreSize.y) / 2, score, 0x000000)
 
-def drawPlayerInfo(var zonk: Zonk?; x: int; y: int; color: uint)
+def drawPlayerInfo(var zonk: Zonk?; x: int; y: int)
     let width = 120
     let gap = 6
-    rect(x, y, width, width, 0x00FF00)
+    let color = 0xFFFFFF
+    fill_rect(x, y, width, width, 0x0000FF)
     set_font_size(14)
     let roundInfo = "Round {zonk.numRounds} of {NUM_ROUNDS}"
     var nameSize = get_text_size(roundInfo)
-    text_out(x + gap, y, roundInfo, color)
-    text_out(x + gap, y + int(nameSize.y), "Score: {zonk.round.score}", color)
-    text_out(x + gap, y + int(nameSize.y) * 2, "Bank: {zonk.bank}", color)
+    text_out(x + gap, y + gap, roundInfo, color)
+    line(x + gap, y + int(nameSize.y) + gap, x + width - gap, y + int(nameSize.y) + gap, color)
+    text_out(x + gap, y + gap * 2 + int(nameSize.y), "Score: {zonk.round.score}", color)
+    text_out(x + gap, y + gap * 2 + int(nameSize.y) * 2, "Bank: {zonk.bank}", color)
+    text_out(x + gap, y + gap * 2 + int(nameSize.y) * 3, "Goal: {zonk.goal}", color)
+
 
 def drawDice(var zonk: Zonk?)
     let length = length(zonk.round.dice)
@@ -91,5 +93,12 @@ def private getStateText(var zonk: Zonk?): string
     if zonk.state == ZonkState WAIT_FOR_ROUND
         return "Press [ENTER] to roll new round. "
 
-    return "not defined yet"
+    return "-"
+
+// def drawInfo(var zonk: Zonk?; x: int; y: int)
+//     return
+
+// def private getInfoText(var zonk: Zonk?)
+//     return
+
 

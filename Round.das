@@ -53,7 +53,9 @@ class Round
         // make prize round instad of completion
         var prizeRound = true
         for die in dice
-            die.setAside = die.selected
+            if die.selected
+                die.selected = false
+                die.setAside = true
             if !die.setAside
                 canThrowDice = true
                 prizeRound = false
@@ -67,12 +69,11 @@ class Round
             canThrowDice = true
             for die in dice
                 die.setAside = false
-                die.selected = false
 
     def private getSelectedVals(): array<int>
         var res: array<int>
         for die in dice
-            if !die.setAside && die.selected
+            if die.selected
                 push(res, die.value)
         return <- res
 

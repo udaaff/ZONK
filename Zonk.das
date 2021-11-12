@@ -1,7 +1,7 @@
 require Round
 require Random
 
-let NUM_ROUNDS = 1
+let NUM_ROUNDS = 2
 
 enum ZonkState
     IN_ROUND
@@ -15,8 +15,10 @@ class Zonk
     round: Round?
     completedRounds: array<Round?>
     state: ZonkState
+    goal: int
 
-    def Zonk()
+    def Zonk(goal_: int = 5000)
+        goal = goal_
         self->startNewRound()
 
     def startNewRound
@@ -27,8 +29,7 @@ class Zonk
         state = ZonkState IN_ROUND
 
     def canPlayNextRound
-        let playedRoundsLen = length(completedRounds)
-        return playedRoundsLen == 0 || NUM_ROUNDS - playedRoundsLen > 1
+        return numRounds < NUM_ROUNDS
 
     def act
         if state == ZonkState HALTED

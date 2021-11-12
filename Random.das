@@ -6,4 +6,4 @@ def randomizeSeed
     randomize_seed(seed)
 
 def randomInt(value: int)
-    return 4 //random_int(seed) % value
+    return random_int(seed) % value
