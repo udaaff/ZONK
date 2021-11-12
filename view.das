@@ -1,6 +1,7 @@
 require daslib/media
 require Combos
 require Die
+require Zonk
 
 let VALUE_2_DIE <- [{auto
     [{int 0; 0; 0; 0; 1; 0; 0; 0; 0}];
@@ -65,4 +66,27 @@ def drawDices(dices: array<Die?>)
     for i in range(length)
         let die = dices[i]
         drawDie(gap + gap * gap * i, gap, die.value, gap * 7, die.selected, die.setAside)
+
+def drawState(var zonk: Zonk?; x: int; y: int)
+    let state = getStateText(zonk)
+    set_font_size(16)
+    var stateSize = get_text_size(state)
+    text_out(x - int(stateSize.x) / 2 , y - int(stateSize.y) / 2, state, 0xFFFFFF)
+
+def private getStateText(var zonk: Zonk?): string
+    if zonk.state == ZonkState COMPLETED
+        return "Game over"
+    if zonk.state == ZonkState IN_ROUND
+        var res: string = ""
+        if zonk.round.canSetAside
+            res += "Press [1-5] to select dice. Press [SPACE] to hold. "
+        if zonk.round.canBankScore
+            res += "Press [SHIFT] to bank."
+        if zonk.round.canThrowDice
+            res += "Press [ENTER] to roll. "
+        return res
+
+        if zonk.round.completed && zonk->canPlayNextRound()
+            return "Round result: {zonk.round.score == 0 ? "ZONK" : string(zonk.round.score)}. Press RETURN to roll."
+    return "not defined yet"
 

@@ -8,7 +8,7 @@ class Round
     dice: array<Die?>
     combos: array<array<Die?>>
     canThrowDice: bool = true
-    canSetAside: bool = true
+    canSetAside: bool = false
     canBankScore: bool = false
     completed: bool = false
 
