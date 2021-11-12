@@ -30,7 +30,7 @@ def drawDie(x: int; y: int; value: int; size: int = 56; selected = false; setAsi
 def drawCombos(x: int; y: int; w: int; combs: auto)
     let comboHeight = 40
     var numCombos = length(combs)
-    fill_rect(x, y, w, numCombos * comboHeight, 0xC0C0C0)
+    fill_rect(x, y, w, numCombos * comboHeight, 0x222222)
     for i in range(numCombos)
         drawCombo(x, y + i * comboHeight, w, comboHeight, combs[i])
     return
@@ -44,10 +44,10 @@ def drawCombo(x: int; y: int; w: int; h: int; comb: Comb?)
     set_font_size(14)
     var score = "{comb.score}"
     var scoreSize = get_text_size(score)
-    text_out(x + w - gap - int(scoreSize.x), y + h / 2 - int(scoreSize.y) / 2, score, 0x000000)
+    text_out(x + w - gap - int(scoreSize.x), y + h / 2 - int(scoreSize.y) / 2, score, 0xFFFFFF)
 
 def drawPlayerInfo(var zonk: Zonk?; x: int; y: int)
-    let width = 120
+    let width = 140
     let gap = 6
     let color = 0xFFFFFF
     fill_rect(x, y, width, 140, 0x0000FF)
@@ -96,10 +96,20 @@ def private getStateText(var zonk: Zonk?): string
 
     return "-"
 
-// def drawInfo(var zonk: Zonk?; x: int; y: int)
-//     return
+def drawInfo(var zonk: Zonk?; x: int; y: int)
+    let info = getInfoText(zonk)
+    set_font_size(50)
+    var infoSize = get_text_size(info)
+    text_out(x, y - int(infoSize.y) / 2, info, 0x00FF00)
+    return
 
-// def private getInfoText(var zonk: Zonk?)
-//     return
+def private getInfoText(var zonk: Zonk?)
+    if zonk.round.completed && zonk.round.score == 0
+        return "ZONK"
+    if zonk.round.prizeRound
+        return "PRIZE ROUND!"
+    if zonk.state == ZonkState HALTED
+        return "GAME OVER"
+    return ""
 
 

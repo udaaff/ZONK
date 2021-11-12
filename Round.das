@@ -11,6 +11,7 @@ class Round
     canSetAside: bool = false
     canBankScore: bool = false
     completed: bool = false
+    prizeRound: bool = false
 
     def throwDice
         if !canThrowDice
@@ -51,7 +52,7 @@ class Round
             return
 
         // make prize round instad of completion
-        var prizeRound = true
+        prizeRound = true
         for die in dice
             if die.selected
                 die.selected = false

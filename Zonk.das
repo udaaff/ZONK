@@ -3,7 +3,7 @@ require Random
 require daslib/media
 require strings
 
-let NUM_ROUNDS = 4
+let NUM_ROUNDS = 10
 let DEFAULT_BALANCE = 2000
 
 enum ZonkState
@@ -56,7 +56,7 @@ class Zonk
 
         if state == ZonkState COMPLETED
             if bank >= goal
-                balance += bet * 200
+                balance += bet * 2
                 local_storage_set("zonk_balance", "{balance}")
             state = ZonkState HALTED
 
