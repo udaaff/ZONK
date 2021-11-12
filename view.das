@@ -18,7 +18,7 @@ def drawDie(x: int; y: int; value: int; size: int = 56; selected = false; setAsi
 
     if selected
         set_font_size(14)
-        let hold = "hold"
+        let hold = "HOLD"
         let holdSize = get_text_size(hold)
         text_out(x + size / 2 - int(holdSize.x) / 2, y + size, hold, 0x00FF00)
 
@@ -30,7 +30,7 @@ def drawDie(x: int; y: int; value: int; size: int = 56; selected = false; setAsi
 def drawCombos(x: int; y: int; w: int; combs: auto)
     let comboHeight = 40
     var numCombos = length(combs)
-    fill_rect(x, y, w, numCombos * comboHeight, 0x222222)
+    fill_rect(x, y, w, numCombos * comboHeight, 0x0000FF)
     for i in range(numCombos)
         drawCombo(x, y + i * comboHeight, w, comboHeight, combs[i])
     return
@@ -38,7 +38,7 @@ def drawCombos(x: int; y: int; w: int; combs: auto)
 def drawCombo(x: int; y: int; w: int; h: int; comb: Comb?)
     let dieSize = 28
     let gap = h / 2 - dieSize / 2
-    line(x + gap, y + h, x + w - gap * 2, y + h, 0x000000)
+    rect(x + 1, y + 1, w - 2, h - 2, 0xFFFFFF)
     for i in range(length(comb.diceVals))
         drawDie(gap + x + i * (dieSize + gap), gap + y, comb.diceVals[i], dieSize, false, false)
     set_font_size(14)
@@ -51,6 +51,7 @@ def drawPlayerInfo(var zonk: Zonk?; x: int; y: int)
     let gap = 6
     let color = 0xFFFFFF
     fill_rect(x, y, width, 140, 0x0000FF)
+    rect(x + 2, y + 2, width - 4, width - 4, 0xFFFFFF)
     set_font_size(14)
     let roundInfo = "Round {zonk.numRounds} of {NUM_ROUNDS}"
     var nameSize = get_text_size(roundInfo)
@@ -98,18 +99,31 @@ def private getStateText(var zonk: Zonk?): string
 
 def drawInfo(var zonk: Zonk?; x: int; y: int)
     let info = getInfoText(zonk)
-    set_font_size(50)
+    set_font_size(40)
     var infoSize = get_text_size(info)
-    text_out(x, y - int(infoSize.y) / 2, info, 0x00FF00)
+    text_out(x, y - int(infoSize.y) / 2, info, 0xFF00FF)
     return
 
 def private getInfoText(var zonk: Zonk?)
+    if zonk.state == ZonkState HALTED
+        let sign = zonk.bank >= zonk.goal ? "+" : "-"
+        return "BALANCE {sign}{zonk.bet * BET_MULT}"
     if zonk.round.completed && zonk.round.score == 0
         return "ZONK"
+    if zonk.round.completed
+        return "BANK {zonk.round.score}"
     if zonk.round.prizeRound
         return "PRIZE ROUND!"
-    if zonk.state == ZonkState HALTED
-        return "GAME OVER"
+    if zonk.round.dice |> length() == 0
+        return "BET {zonk.bet}"
+
     return ""
+
+def drawBG(w: int; h: int)
+    let gap = 8
+    let bottom = 54
+    line(gap, h - bottom, w - gap, h - bottom, 0xFFFFFF)
+    line(gap, h - bottom + 2, w - gap, h - bottom + 2, 0xFFFFFF)
+    return
 
 

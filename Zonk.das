@@ -5,6 +5,7 @@ require strings
 
 let NUM_ROUNDS = 10
 let DEFAULT_BALANCE = 2000
+let BET_MULT = 2
 
 enum ZonkState
     IN_ROUND
@@ -22,7 +23,7 @@ class Zonk
     bet: int
     balance: int
 
-    def Zonk(goal_: int = 100; bet_: int = 200)
+    def Zonk(goal_: int = 200; bet_: int = 200)
         goal = goal_
         bet = bet_
 
@@ -40,9 +41,18 @@ class Zonk
         if numRounds == 1
             balance -= bet
             local_storage_set("zonk_balance", "{balance}")
+        else
+            round->throwDice()
 
     def canPlayNextRound
         return numRounds < NUM_ROUNDS
+
+    def private finishGame
+        balance += bet * BET_MULT
+        local_storage_set("zonk_balance", "{balance}")
+
+    def private canFinishGame
+        return bank >= goal
 
     def act
         if state == ZonkState HALTED
@@ -51,13 +61,12 @@ class Zonk
         if (round?.completed ?? false) && state == ZonkState IN_ROUND
             bank += round.score
             completedRounds |> push(round)
-            state = self->canPlayNextRound() ? ZonkState WAIT_FOR_ROUND : ZonkState COMPLETED
+            state = self->canPlayNextRound() && !self->canFinishGame() ? ZonkState WAIT_FOR_ROUND : ZonkState COMPLETED
             return
 
         if state == ZonkState COMPLETED
             if bank >= goal
-                balance += bet * 2
-                local_storage_set("zonk_balance", "{balance}")
+                self->finishGame()
             state = ZonkState HALTED
 
 

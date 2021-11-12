@@ -32,12 +32,8 @@ class Round
         if !hasComb(vals)
             score = 0
             completed = true
-            print("ZONK")
         else
             canSetAside = true
-
-        for i in range(NUM_DICE)
-            print("[{dice[i].value + 1}] ")
 
     def setAside
         if !canSetAside
@@ -51,7 +47,6 @@ class Round
         if combsValue == 0
             return
 
-        // make prize round instad of completion
         prizeRound = true
         for die in dice
             if die.selected

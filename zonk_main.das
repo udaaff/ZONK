@@ -55,11 +55,12 @@ def act(dt: float)
 [export]
 def draw
     zonk |> drawDice()
-    zonk |> drawPlayerInfo(6, 190)
-    zonk |> drawState(APP_WIDTH / 2, APP_HEIGHT - 40)
+    zonk |> drawPlayerInfo(8, 190)
+    zonk |> drawState(APP_WIDTH / 2, APP_HEIGHT - 30)
     zonk |> drawInfo(20, 120)
 
     drawCombos(APP_WIDTH - 200 - 8, 8, 200, CombosList)
+    drawBG(APP_WIDTH, APP_HEIGHT)
     return
 
 // commands
