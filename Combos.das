@@ -1,3 +1,23 @@
+class Comb
+    score: int
+    diceVals: array<int>
+
+    def Comb(var diceVals_: array<int>; score_: int)
+        score = score_
+        diceVals := diceVals_
+
+let CombosList <- [[ Comb?
+    new Comb([{int 0}],       100);
+    new Comb([{int 4}],       50);
+    new Comb([{int 0; 0; 0}], 1000);
+    new Comb([{int 1; 1; 1}], 200);
+    new Comb([{int 2; 2; 2}], 300);
+    new Comb([{int 3; 3; 3}], 400);
+    new Comb([{int 4; 4; 4}], 500);
+    new Comb([{int 5; 5; 5}], 600)
+]]
+
+// fix: calculate according to combo list
 def calculate(var dieVals: array<int>): int
     sort(dieVals)
     var i = 0

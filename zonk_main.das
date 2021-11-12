@@ -7,6 +7,7 @@ require Round
 require Die
 require view
 require Zonk
+require Combos
 
 var round: Round?
 var zonk: Zonk?
@@ -46,11 +47,13 @@ def act(dt: float)
 // you can draw anything in this function
 [export]
 def draw
+    let gap = 8
     for i in range(length(zonk.round.dice))
         let die = zonk.round.dice[i]
-        drawDie(8 + 8 * 8 * i, 8, die.value, die.selected, die.setAside)
+        drawDie(gap + gap * gap * i, gap, die.value, gap * 7, die.selected, die.setAside)
 
     drawPlayerInfo(6, 200, "Player 1", zonk.bank, 0xFF00FF)
+    drawCombos(340, gap, 200, CombosList)
     return
 
 // commands
