@@ -1,10 +1,7 @@
 require daslib/media
 options debugger            // uncomment for debug in VS Code
 require daslib/debug        // uncomment for debug in VS Code
-
 require Random
-require Round
-require Die
 require view
 require Zonk
 require Combos
@@ -12,11 +9,9 @@ require Combos
 let APP_WIDTH = 600
 let APP_HEIGHT = 400
 
-var round: Round?
 var zonk: Zonk?
 var help: bool = false
 
-// 'initialize' runs once when game starts and every hot-reload
 [export]
 def initialize
     disable_auto_upscale()
@@ -27,8 +22,6 @@ def initialize
     zonk = new Zonk()
     return
 
-// this function is called to update game data,
-// dt - time elapsed since the previous update (in seconds)
 [export]
 def act(dt: float)
     zonk->act()
@@ -54,8 +47,6 @@ def act(dt: float)
         help = !help
     return
 
-// this function will be called every frame after 'act',
-// you can draw anything in this function
 [export]
 def draw
     zonk |> drawDice()
@@ -83,7 +74,6 @@ def throwDice
     if zonk.state == ZonkState WAIT_FOR_ROUND
         zonk->startNewRound()
         return
-
     zonk.round->throwDice()
 
 def bankScore

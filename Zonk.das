@@ -17,7 +17,6 @@ class Zonk
     bank: int = 0
     numRounds: int = 0
     round: Round?
-    completedRounds: array<Round?>
     state: ZonkState
     goal: int
     bet: int
@@ -26,7 +25,6 @@ class Zonk
     def Zonk(goal_: int = 2000; bet_: int = 200)
         goal = goal_
         bet = bet_
-
         let balanceStr = local_storage_get("zonk_balance")
         balance = balanceStr == "" ? DEFAULT_BALANCE : to_int(balanceStr)
         self->startNewRound()
@@ -37,7 +35,6 @@ class Zonk
         round = new Round()
         ++numRounds
         state = ZonkState IN_ROUND
-
         if numRounds == 1
             balance -= bet
             local_storage_set("zonk_balance", "{balance}")
@@ -57,13 +54,10 @@ class Zonk
     def act
         if state == ZonkState HALTED
             return
-
         if (round?.completed ?? false) && state == ZonkState IN_ROUND
             bank += round.score
-            completedRounds |> push(round)
             state = self->canPlayNextRound() && !self->canFinishGame() ? ZonkState WAIT_FOR_ROUND : ZonkState COMPLETED
             return
-
         if state == ZonkState COMPLETED
             if bank >= goal
                 self->finishGame()

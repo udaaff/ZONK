@@ -58,7 +58,6 @@ class Round
 
         score += combsValue
         canSetAside = false
-        // make some threshold
         canBankScore = true
 
         if prizeRound
@@ -86,7 +85,3 @@ class Round
             canSetAside = false
             canThrowDice = false
             completed = true
-
-    def toString
-        for i in range(NUM_DICE)
-            print("[{dice[i].value}] ")
