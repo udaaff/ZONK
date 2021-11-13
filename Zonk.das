@@ -22,7 +22,7 @@ class Zonk
     bet: int
     balance: int
 
-    def Zonk(goal_: int = 2000; bet_: int = 200)
+    def Zonk(goal_: int = 5000; bet_: int = 200)
         goal = goal_
         bet = bet_
         let balanceStr = local_storage_get("zonk_balance")
